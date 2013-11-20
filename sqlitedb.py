@@ -50,33 +50,6 @@ def getItemById(item_id):
     else:
     	return None 
 
-def makeSet(results):
-    resultSet = set()
-    for result in results:
-        itemMap = {}
-        itemMap['id'] = result.id
-        itemMap['name'] = HTMLParser.HTMLParser().unescape(result.name)
-        itemMap['current_bid'] = result.current_bid
-        itemMap['buy_price'] = result.buy_price
-        itemMap['num_bids'] = result.num_bids
-        itemMap['start'] = str(result.start)
-        itemMap['end'] = str(result.end)
-        itemMap['user_id'] = result.user_id
-        itemMap['description'] = HTMLParser.HTMLParser().unescape(result.description)
-        resultSet.add(json.dumps(itemMap))
-    return resultSet
-
-def insertNewUser(username, password, location, country):
-    t = db.transaction()
-    try:
-        query_string = 'insert into users (id, rating, location, country, password) values ($username, $rating, $location, $country, $password)'
-        query(query_string, {'username': username, 'location': location, 'country': country, 'password': password, 'rating':0} )
-    except:
-        t.rollback()
-        raise
-    else:
-        t.commit()
-
 # helper method to determine whether query result is empty
 # Sample use:
 # query_result = sqlitedb.query('select currenttime from Time')
@@ -95,32 +68,6 @@ def isResultEmpty(result):
     except:
         return True
 
-def validUser(username):
-    t = db.transaction()
-    try:
-        query_string = 'select * from users where id=$name'
-        result = query(query_string, {'name': username})
-        return not(isResultEmpty(result))
-    except:
-        t.rollback()
-        raise
-    else:
-        t.commit()
-
-def validPassword(name, password):
-    t = db.transaction()
-    try:
-        query_string = 'select password from users where id=$name'
-        result = query(query_string, {'name': name})
-        if(result[0].password == password):
-            return True
-        else:
-            return False
-    except:
-        t.rollback()
-        raise
-    else:
-        t.commit()
 # wrapper method around web.py's db.query method
 # check out http://webpy.org/cookbook/query for more info
 def query(query_string, vars = {}):
@@ -128,13 +75,9 @@ def query(query_string, vars = {}):
 
 #####################END HELPER METHODS#####################
 
-#TODO: additional methods to interact with your database,
-# e.g. to update the current time
-
+# updates current time
 def updateCurrentTime(updatedTime):
     t = db.transaction()
-    # query_string = 'select * from items where id = $itemID'
-    # result = query(query_string, {'itemID': item_id})
     try:
         query_string = 'update time set time = $updatedTime'
         query(query_string, {'updatedTime': updatedTime})
@@ -144,6 +87,7 @@ def updateCurrentTime(updatedTime):
     else:
         t.commit()
 
+# gets the end time of an auction
 def getAuctionStatus(item_id):
     t = db.transaction()
     try:
@@ -156,6 +100,7 @@ def getAuctionStatus(item_id):
     else:
         t.commit()
 
+# checks if a given username exists
 def checkUsername(username):
     t = db.transaction()
     try:
@@ -168,10 +113,10 @@ def checkUsername(username):
     else:
         t.commit()
 
+# enters a given bid into the bid table
 def enterBid(item_id, bid_amt, current_time, bidder):
     t = db.transaction()
     try:
-        # testuser1 is my test user... lol
         query_string = 'insert into bids (item_id, user_id, time, amount) values ($item_id, $user_id, $current_time, $bid_amt)'
         query(query_string, {'item_id':item_id, 'user_id': bidder, 'current_time': current_time, 'bid_amt' : bid_amt})
     except:
@@ -180,10 +125,10 @@ def enterBid(item_id, bid_amt, current_time, bidder):
     else:
         t.commit()
 
+# gets the winner of a closed auction
 def getAuctionWinner(item_id):
     t = db.transaction()
     try:
-        # testuser1 is my test user... lol
         query_string = 'select * from bids where item_id=$item_id order by id desc limit 1;'
         result = query(query_string, {'item_id':item_id})
         if (not((isResultEmpty(result)))):
@@ -197,6 +142,7 @@ def getAuctionWinner(item_id):
     else:
         t.commit()
 
+# gets all items
 def getAllItems():
     t = db.transaction()
     try:
@@ -209,6 +155,7 @@ def getAllItems():
     else:
         t.commit()
 
+# gets all categories
 def getAllCategories():
     t = db.transaction()
     try:
@@ -221,6 +168,7 @@ def getAllCategories():
     else:
         t.commit()
 
+# gets all items by a specific category
 def getItemsByCategory(category):
     t = db.transaction()
     try:
@@ -237,15 +185,16 @@ def getItemsByCategory(category):
     else:
         t.commit()
 
+# gets items depending on whether or not they are open/closed
 def getItemsByStatus(status):
     t = db.transaction()
     current_time = getTime()
     try:
         if(status == "status-o"):
-            query_string = 'select * from items where end > $current_time'
+            query_string = 'select * from items where end > $current_time and start < $current_time'
 
         else:
-            query_string = 'select * from items where end < $current_time '
+            query_string = 'select * from items where end < $current_time or start > $current_time'
         result = query(query_string, {'current_time':current_time})
         return makeSet(result)
     except:
@@ -254,6 +203,7 @@ def getItemsByStatus(status):
     else:
         t.commit()
 
+# get items by price (depending on the selected option value from the client)
 def getItemsByPrice(price):        
     priceMap = {
                 "li-1" : 'current_bid <= 10',
@@ -275,6 +225,7 @@ def getItemsByPrice(price):
     else:
         t.commit()
 
+# finds the super set of items pertaining to restrictiongs given by the client
 def findSuperSet(category, status, price):
     allItems = makeSet(getAllItems())
     if (category == ''):
@@ -293,19 +244,82 @@ def findSuperSet(category, status, price):
     superSet = []
     for item in set1:
         superSet.append(json.loads(item))
-
     return superSet
 
+# gets a user
 def getUser(user):
     t = db.transaction()
     try:
         query_string = 'select * from users where id=$user'
         result = query(query_string, {'user': user})
-        print result[0]
         return result[0]
     except:
         t.rollback()
         raise
     else:
         t.commit()
+
+# determines whether or not a user is valid (for login)
+def validUser(username):
+    t = db.transaction()
+    try:
+        query_string = 'select * from users where id=$name'
+        result = query(query_string, {'name': username})
+        return not(isResultEmpty(result))
+    except:
+        t.rollback()
+        raise
+    else:
+        t.commit()
+
+# determines whether or not a give username's password is identical to the one entered
+def validPassword(name, password):
+    t = db.transaction()
+    try:
+        query_string = 'select password from users where id=$name'
+        result = query(query_string, {'name': name})
+        if(result[0].password == password):
+            return True
+        else:
+            return False
+    except:
+        t.rollback()
+        raise
+    else:
+        t.commit()
+
+# makes the result passed into it a set of maps with item information that are 
+# JSON stringified
+def makeSet(results):
+    resultSet = set()
+    for result in results:
+        itemMap = {}
+        itemMap['id'] = result.id
+        itemMap['name'] = HTMLParser.HTMLParser().unescape(result.name)
+        itemMap['current_bid'] = result.current_bid
+        itemMap['buy_price'] = result.buy_price
+        itemMap['num_bids'] = result.num_bids
+        itemMap['start'] = str(result.start)
+        itemMap['end'] = str(result.end)
+        itemMap['user_id'] = result.user_id
+        itemMap['description'] = HTMLParser.HTMLParser().unescape(result.description)
+        resultSet.add(json.dumps(itemMap))
+    return resultSet
+
+# inserts a new user into the database - broken, why?
+def insertNewUser(username, password, location, country):
+    print 'inserting'
+    t = db.transaction()
+    if (checkUsername(username)):
+        try:
+            query_string = 'insert into users (id, rating, location, country, password) values ($username, $rating, $location, $country, $password)'
+            query(query_string, {'username': username, 'location': location, 'country': country, 'password': password, 'rating':0} )
+            return True
+        except:
+            t.rollback()
+            raise
+        else:
+            t.commit()
+    else: 
+        return False
 

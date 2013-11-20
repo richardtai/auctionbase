@@ -20,8 +20,6 @@ loggedIn = False
 item = {}
 categories = []
 user = None
-itemsPerPage = 50
-
 
 ######################BEGIN HELPER METHODS######################
 
@@ -46,7 +44,7 @@ def updateCurrentItemMap(item_id):
     item['end'] = item_found.end
     item['user_id'] = item_found.user_id
     item['description'] = HTMLParser.HTMLParser().unescape(item_found.description)
-    if (string_to_time(str(item_found.end)) < string_to_time(str(current_time)) or (item_found.current_bid >= item_found.buy_price and item_found.buy_price is not None)):
+    if (string_to_time(str(item_found.end)) < string_to_time(str(current_time)) or (item_found.current_bid >= item_found.buy_price and item_found.buy_price is not None) or string_to_time(str(item_found.start)) > string_to_time(str(current_time))):
         item['isOpen'] = False
         # Need to account if the query does not return anything!
         item['winner'] = sqlitedb.getAuctionWinner(item['id'])
@@ -132,21 +130,20 @@ class signup:
     def GET(self):
         return render_template('signup.html')
     def POST(self):
+        global loggedIn
+        global user
         post_params = web.input()
         username = post_params['username']
         password = post_params['password']
         location = post_params['location']
         country = post_params['country']
-        print post_params
-        # username does not exist
-        print sqlitedb.checkUsername(username)
-        if(sqlitedb.checkUsername(username)):
-            sqlitedb.insertNewUser(username, password, location, country)
-            global loggedIn
-            global user
+        if(sqlitedb.insertNewUser(username, password, location, country)):
             user = username
             loggedIn = True
-        return render_template('/', loggedIn = loggedIn, user = user)
+            return render_template('home.html', loggedIn = loggedIn, user = user)
+        else:
+            print "oh no"
+            # User exists!
 
 
 
