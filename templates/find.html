@@ -1,5 +1,7 @@
 {% extends "app_base.html" %}
 {% block content %}
+
+{% if loggedIn == true %}
 <form method="POST" action="find">
   <div class="row">
     <div class="small-10 centered">
@@ -17,5 +19,16 @@
     </div>
   </div>
 </form>
+
+{% else %}
+
+<h1 style="font-weight: 300; !important;">
+  You must be logged in to browse and bid on items! 
+  <div>
+    <a href="/index">Login<a>
+  </div>
+</h1>
+
+{% endif %}
 
 {% endblock %}

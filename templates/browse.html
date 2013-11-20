@@ -56,6 +56,8 @@
 
 </script>
 
+{% if loggedIn == true %}
+
 <form class="custom" method="POST" action="browse">
   <div class="row collapse">
     <div class="small-12 center">
@@ -139,6 +141,17 @@
 
 <div id="load-more" href="#" class="button medium">More Results</div>
 
-<div id="scroll-up">Top</div>
+<div id="scroll-up">^</div>
+
+{% else %}
+
+<h1 style="font-weight: 300; !important;">
+  You must be logged in to browse and bid on items! 
+  <div>
+    <a href="/index">Login<a>
+  </div>
+</h1>
+
+{% endif %}
 
 {% endblock %}

@@ -44,7 +44,7 @@ def updateCurrentItemMap(item_id):
     item['end'] = item_found.end
     item['user_id'] = item_found.user_id
     item['description'] = HTMLParser.HTMLParser().unescape(item_found.description)
-    if (string_to_time(str(item_found.end)) < string_to_time(str(current_time)) or (item_found.current_bid >= item_found.buy_price and item_found.buy_price is not None) or string_to_time(str(item_found.start)) > string_to_time(str(current_time))):
+    if (string_to_time(str(item_found.end)) < string_to_time(str(current_time)) or (item_found.current_bid >= item_found.buy_price and item_found.buy_price is not None) or string_to_time(str(item_found.start)) < string_to_time(str(current_time))):
         item['isOpen'] = False
         # Need to account if the query does not return anything!
         item['winner'] = sqlitedb.getAuctionWinner(item['id'])
@@ -82,6 +82,7 @@ def render_template(template_name, **context):
 
 
 urls = ('/', 'index',
+        '/index', 'index',
         '/find', 'find',
         '/currtime', 'curr_time',
         '/selecttime', 'select_time',
