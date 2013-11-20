@@ -9,15 +9,15 @@ see http://jinja.pocoo.org/docs/templates/#template-inheritance for more informa
 
 <head>
     <title>AuctionBase</title>
-    <link rel="stylesheet" href="static/css/foundation.css">
-    <link rel="stylesheet" href="static/css/style.css">
-    <script src="static/js/vendor/custom.modernizr.js"></script>
+    <link rel="stylesheet" href="../static/css/foundation.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="../static/js/vendor/custom.modernizr.js"></script>
     <script>
-      document.write('<script src=static/js/vendor/'
+      document.write('<script src=../static/js/vendor/'
         + ('__proto__' in {} ? 'zepto' : 'jquery')
         + '.js><\/script>');
     </script>
-    <script src="static/js/foundation.min.js"></script>
+    <script src="../static/js/foundation.min.js"></script>
     <script>
       $(document).foundation();
     </script>
@@ -27,7 +27,7 @@ see http://jinja.pocoo.org/docs/templates/#template-inheritance for more informa
 <div id="cust-header">
   <div id="title">
     <a id="title-link" href="/index">
-      <img width="100px" src="static/img/logo.png"></img>
+      <img width="100px" src="../static/img/logo.png"></img>
     </a>
   </div>
   {% if loggedIn %}
