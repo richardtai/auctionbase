@@ -1,0 +1,144 @@
+{% extends "app_base.html" %}
+{% block content %}
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+<script>
+  var count = 1;
+
+  $(function() {
+    var availableTags = {{ allCategories|safe }}
+    $( "#category-input" ).autocomplete({
+      source: availableTags,
+      _renderMenu: function( ul, items ) {
+        var that = this;
+        $.each( items, function( index, item ) {
+          that._renderItemData( ul, item );
+        });
+        $( ul ).find( "li:odd" ).addClass( "category-list" );
+      }
+    });
+  });
+
+  function fillInput() {
+    var price = $('#price-list .selected').attr('id');
+    var status = $('#status-list .selected').attr('id');
+    $('#price-input').val(price);
+    $('#status-input').val(status)
+  }
+
+  $(document).ready(function(){
+    $('#load').css('display', 'none');
+    $('.items').css('display', 'block');
+    $('#load-more').click(function(){
+      var str = '#i-' + (count*25);
+
+      $(str).removeClass('last');
+      count = count + 1;
+      for (var i = 1*count; i <= 25*count; i++) {
+        var idStr = '#item-link-' + i;
+        $(idStr).css('display', 'block');
+        if (i === 25*count) {
+          str = '#i-' + (count*25);          
+          $(str).addClass('last');
+        }
+      }
+    });
+
+    $('#scroll-up').click(function(){
+      $('html,body').animate({
+        scrollTop: 0
+      }, 1000);
+    });
+  });
+
+</script>
+
+<form class="custom" method="POST" action="browse">
+  <div class="row collapse">
+    <div class="small-12 center">
+      <div class="row collapse">
+        <div class="small-1 columns">
+          <span class="prefix">Category</span>
+        </div>
+        <div class="small-5 columns">
+          <input type="text" id="category-input" name="category">
+        </div>
+        <div class="small-2 columns">
+          <div class="custom dropdown small" data-id="1384740801109-08tmJ">
+            <a href="#" class="current">Price</a>
+            <a href="#" class="selector"></a>
+            <ul id="price-list">
+              <li class="selected">Price</li>
+              <li id="li-1">&lt;$10</li>
+              <li id="li-2">$10 - $30</li>
+              <li id="li-3">$30 - $50</li>
+              <li id="li-4">$50 - $70</li>
+              <li id="li-5">$71 - $90</li>              
+              <li id="li-6">$91 - $100</li>              
+              <li id="li-7">$100+</li>              
+            </ul>
+          </div>
+        </div>
+        <div class="small-2 columns">
+          <div class="custom dropdown small" data-id="1384740801109-08tmF">
+            <a href="#" class="current">Status</a>
+            <a href="#" class="selector"></a>
+            <ul id="status-list">
+              <li class="selected">Status</li>
+              <li id="status-o">Open</li>
+              <li id="status-c">Closed</li>          
+            </ul>
+          </div>
+        </div>
+        <input style="display:none" id="price-input" name="price">
+        <input style="display:none" id="status-input" name="status">
+        <div class="small-2 columns">
+          <input id="search-button" type="submit" class="button postfix" value="Search" onclick="fillInput()">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div id="load" class="row">
+  <div class="large-3 centered">
+    <img src="static/img/loading.gif"/>
+  </div>
+</div>
+
+<div class="items" style="display: none;">
+{% for item in allItems %}
+{% if loop.index <= 25 %}
+  <a class="browse-item initial" onclick="document.getElementById('item{{loop.index}}').submit(); return false;">
+{% else %}
+  <a id="item-link-{{loop.index}}" class="browse-item later" onclick="document.getElementById('item{{loop.index}}').submit(); return false;">
+{% endif %}
+    <form id="item{{loop.index}}" class="browse-item-form" method="POST" action="find">
+      <input id="browse-item-id" value="{{ item.id }}" name = "item-id">
+      {% if loop.index == 25 %}
+      <div id="i-{{loop.index}}" class="row item-wrapper {{ loop.cycle('odd', 'even') }} last">
+      {% else %}
+      <div id="i-{{loop.index}}" class="row item-wrapper {{ loop.cycle('odd', 'even') }}">      
+      {% endif %}
+        <div class="large-6 columns browse-item-info">
+          <div class="browse-item-title">{{ item.name|safe }}</div>
+          <div class="browse-item-current">Current Bid: ${{ item.current_bid}}</div>
+          <div class="browse-item-end">End Time: {{ item.end }}</div>
+        </div>
+        <div class="large-6 centered columns browse-item-description">
+          {{ item.description[0:500]|safe }}...
+        </div>
+      </div>
+    </form>
+  </a>
+{% endfor %}
+</div>
+
+<div id="load-more" href="#" class="button medium">More Results</div>
+
+<div id="scroll-up">Top</div>
+
+{% endblock %}

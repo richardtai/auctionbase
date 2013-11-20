@@ -1,0 +1,32 @@
+{% extends "app_base.html" %}
+{% block content %}
+
+{% if loggedIn %}
+<div class="row">
+  <h1 style="font-weight: 200;">Welcome to AuctionBase, {{user}}!</h1>
+</div>
+{% else %}
+<div id="home-wrapper" class="row">
+  <div id="welcome-wrapper" class="large-6 left">
+    <div id="welcome-message"> Welcome to AuctionBase! </div>
+    <div id="punch-line"> We're not using eBay's data - we swear!</div>
+  </div>
+  <div id="login-wrapper" class="large-6 right">
+    <form method="POST" action="/">
+      <label id="login-label">Login</label>
+      <div class="large-10 centered">
+        <input type="text" name="username" placeholder="Username">
+      </div>
+      <div class="large-10 centered">
+        <input type="password" name="password" placeholder="Password">
+      </div>      
+      <input class="button small" type="submit" value="Login">
+    </form>
+    <div class="large-12" style="margin-bottom: 10px; color: #888;">
+      Don't have an account? <a href="signup"> Sign up! </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

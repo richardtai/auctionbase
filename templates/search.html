@@ -1,0 +1,99 @@
+{% extends "app_base.html" %}
+
+{% block content %}
+<div class="row">
+  <div id="search-results-text" class="small-12" style="text-align: left;">
+    Search result(s) for "{{ item.id }}":
+  </div>
+</div>
+{% if item != None %}
+  <div id="item" class="row">
+    {% if not item.isOpen %}
+      <div class="row">
+        <div id="auction-closed">
+          This auction is closed. 
+          <div id="winner-message">
+            {% if item.winner == None %}
+              No one bid on this item.
+            {% else %}
+              {{ item.winner }} won the auction for ${{ item.current_bid }}.
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="row" style="padding: 0px 10px 0px 10px;">
+      <div id="item-name" class="large-6 left">
+        {{ item.name }}  
+        <div id="item-seller" class="bid-info large-12 right">
+          <span style="font-weight: 200;">by</span> 
+          <span style="font-weight: 300; ">{{ item.user_id }}</span>
+        </div>    
+      </div>
+      <div id="item-start" class="large-6 right">
+        <div>Start Time: {{ item.start }}</div>
+        <div>End Time: {{ item.end }}</div>
+      </div>
+    </div>
+    <br>
+    <div id="item-bid-info" class="row">
+      <div class="large-6 columns">
+        <div id="item-current" class="bid-info large-12 right">
+          Current Bid: 
+          ${{ item.current_bid }}
+        </div>
+        {% if item.buy_price != None %}
+        <div id="item-buy-price" class="bid-info large-6 right">
+          ${{ item.buy_price }}
+        </div>
+        {% endif %}
+        <div id="item-first-bid" class="bid-info large-12 left">
+          First Bid: ${{ item.first_bid }}
+        </div>
+        <div id="item-num-bids" class="bid-info large-12 left">
+          Number of Bids: {{ item.num_bids }}
+        </div>
+      </div>
+      <div class="large-6 columns">
+        <form method="POST" action="bid">
+            <div class="row">
+              <div class="small-12">
+                <div class="row">
+                  <div class="small-1 columns"></div>
+                  <input id="item-bid-id" value="{{ item.id }}" name="item-id">
+                  <div class="small-4 columns">
+                    <label for="browse-input" class="right inline">Enter Bid:</label>
+                  </div>
+                  <div class="small-5 columns">
+                    {% if not item.isOpen %}
+                    <input type="text" id="browse-input" autofocus="true" name="bid" disabled>
+                    {% else %}
+                    <input type="text" id="browse-input" autofocus="true" name="bid">
+                    <input style="display: none;" type="text" id="bidder" value="{{ user }}" name="bidder">
+                    <input class="button small" type="submit" value="Submit">
+                    {% endif %}
+                  </div>
+                  <div class="small-1 columns"></div>        
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <br>
+    <div id="item-description-label" class="large-12 left">
+      Description:
+    </div>
+    <div id="item-description" class="large-12 left">
+      {{ item.description }}
+    </div>
+  </div>
+{% else %}
+  <div class="row">
+    Nothing!
+  </div>
+{% endif %}
+
+
+{# also make sure to include this very last line as well #}
+{% endblock %}

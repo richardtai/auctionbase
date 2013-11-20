@@ -1,0 +1,290 @@
+
+html {
+  font-family: 'Helvetica', sans-serif;
+  font-weight: 300;
+}
+
+body {
+  width: 100%;
+}
+
+label {
+  font-size: 1em;
+  font-weight: 200;
+}
+
+a {
+ -webkit-transition: color 200ms linear;
+ -moz-transition: color 200ms linear;
+ -o-transition: color 200ms linear;
+ -ms-transition: color 200ms linear;
+ transition: color 200ms linear;  
+}
+
+
+a:hover {
+ -webkit-transition: color 200ms linear;
+ -moz-transition: color 200ms linear;
+ -o-transition: color 200ms linear;
+ -ms-transition: color 200ms linear;
+ transition: color 200ms linear;  
+}
+
+li {
+ -webkit-transition: background-color 150ms linear;
+ -moz-transition: background-color 150ms linear;
+ -o-transition: background-color 150ms linear;
+ -ms-transition: background-color 150ms linear;
+ transition: background-color 150ms linear;
+}
+
+/* app_base.html */
+
+#title-link {
+  color: white;
+}
+
+#title-link:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#cust-header {
+  background: #2ba6cb;
+  color: white;
+  height: 60px;
+  padding: 10px;
+}
+
+#title {
+  float: left;
+  font-size: 1.3em;
+  font-weight: 200;
+}
+
+#hi-user {
+  float: right;
+  text-align: right;
+  font-size: 1.3em;
+  font-weight: 200;
+  position: relative;
+  top: 10px;
+}
+
+#nav-menu {
+  padding: 10px;
+}
+
+.nav-item {
+  padding: 5px;
+  text-align: center;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0px;
+  border-top: 1px solid #ccc;
+  font-size: 0.7em;
+  font-weight: 300;
+}
+
+/* browse.html */
+
+.later {
+  display: none;
+}
+
+.last {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.item-wrapper {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;  
+  border-right: 1px solid #ccc;  
+  padding: 20px;
+}
+
+.browse-item {
+  color: black;
+}
+
+.browse-item:visited {
+  color: black;
+  text-decoration: none;
+}
+
+#browse-item-id {
+  display: none;
+}
+
+.browse-item-form {
+  margin: 0px;
+}
+
+.browse-item-title {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.browse-item-current {
+  font-size: 1em;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+
+.browse-item-end {
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.browse-item-info {
+  text-align: left;
+}
+
+.browse-item-description {
+  text-align: left;
+  border-left: 1px solid #ccc;
+}
+
+.odd {
+  background-color: #F6F6F9;
+}
+
+.ui-menu-item {
+  list-style-type: none;
+  background: white;
+   -webkit-transition: background-color 150ms linear;
+   -moz-transition: background-color 150ms linear;
+   -o-transition: background-color 150ms linear;
+   -ms-transition: background-color 150ms linear;
+   transition: background-color 150ms linear;
+  padding: 3px 10px 3px 10px;
+}
+
+.ui-menu-item:hover {
+  list-style-type: none;
+  background: #ccc;
+}
+
+#ui-id-1 {
+  width: 300px !important;
+  border: 1px solid #ccc;
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+/* search.html */
+
+#item {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+#item-name {
+  font-size: 1.3em;
+  font-weight: 400;
+  text-align: left;
+}
+
+#item-description {
+  font-size: 1em;
+  font-weight: 300;
+  text-align: justify;
+}
+
+#item-start {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+#item-description-label {
+  text-align: left;
+}
+
+#item-bid-info {
+  margin: 10px 0px 10px 10px;
+}
+
+#item-bid-id {
+  display: none;
+}
+
+#item-seller {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.bid-info {
+  text-align: right;
+}
+
+#search-results-text {
+  font-size: 1.3em;
+  font-weight: 200;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+/* home.html */
+
+#login-label {
+  margin-bottom: 20px;
+}
+
+#home-wrapper {
+  margin-top: 20px;
+}
+
+#login-wrapper {
+  border: 1px solid #ccc;
+  padding: 15px 25px 5px 25px;
+}
+
+#welcome-message {
+  font-weight: 300;
+  font-size: 3em;
+}
+
+#punch-line {
+  margin-top: 30px;
+  font-weight: 200;
+  font-size: 1.3em;
+}
+
+/* signup.html */
+
+#signup-wrapper {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 30px 30px 20px 30px;
+}
+
+/* search.html */
+#auction-closed {
+  font-size: 2em;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: red;
+}
+
+#winner-message {
+  font-weight: 300;
+  font-size: 0.7em;
+  color: black;
+}
+
+#scroll-up {
+  position: fixed;
+  padding: 5px 7px 3px 6px;
+  background: #ddd;
+  border: 1px solid #ccc;
+  color: #888;
+  right: 0px;
+  bottom: 45%;
+  font-weight: 200;
+}

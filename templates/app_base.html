@@ -1,0 +1,76 @@
+{# base template that other templates can build from. Specifies the title for the
+page and a navigation bar at the top
+see http://jinja.pocoo.org/docs/templates/#template-inheritance for more information #}
+
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <title>AuctionBase</title>
+    <link rel="stylesheet" href="static/css/foundation.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="static/js/vendor/custom.modernizr.js"></script>
+    <script>
+      document.write('<script src=static/js/vendor/'
+        + ('__proto__' in {} ? 'zepto' : 'jquery')
+        + '.js><\/script>');
+    </script>
+    <script src="static/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  
+</head>
+
+<div id="cust-header">
+  <div id="title">
+    <a id="title-link" href="/">
+      <img width="100px" src="static/img/logo.png"></img>
+    </a>
+  </div>
+  {% if loggedIn %}
+  <div class="right">
+    <a id="hi-user" href="#" data-dropdown="hover1" data-options="is_hover:true" style="color: white;">Hi, {{ user }}!</a>
+    <ul id="hover1" class="f-dropdown" data-dropdown-content>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </div>
+  {% else %}
+  <div class="right" style="margin-top: 10px;">
+    <a id="login-link" href="/" style="color: white;">Login</a>
+  </div>
+  {% endif %}
+</div>
+<div id="nav-menu" class="row">
+  <div class="nav-item small-3 columns">
+    <div class="item">
+      <a href="currtime">Current Time</a>
+    </div>
+  </div>
+  <div class="nav-item small-3 columns">    
+    <div class="item">
+      <a href="selecttime">Select a Time</a>
+    </div>
+  </div>
+  <div class="nav-item small-3 columns">    
+    <div class="item">
+      <a href="find">Find</a>
+    </div>
+  </div>
+  <div class="nav-item small-3 columns">    
+    <div class="item">
+      <a href="browse">Browse</a>
+    </div>
+  </div>
+</div>
+{# specify content block so that other templates can use this template as a base #}
+<div id="content">
+  <center>
+    {% block content %}
+    {% endblock %}
+  </center>
+</div>
+
+</html>

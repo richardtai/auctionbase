@@ -1,0 +1,18 @@
+{% extends "app_base.html" %}
+{% block content %}
+
+<div class="row">
+  <div id="signup-wrapper" class="large-6 centered">
+    <form method="POST" action="signup">
+      <label id="login-label">Signup</label>
+      <input class="small-3" type="text" name="username" placeholder="Enter a username">
+      <input class="small-3" type="password" name="password" placeholder="Choose a password">
+      <input class="small-3" type="text" name="location" placeholder="Location (optional)">
+      <input class="small-3" type="text" name="country" placeholder="Country (optional)">      
+      <input class="button small" type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

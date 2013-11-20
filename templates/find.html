@@ -1,0 +1,21 @@
+{% extends "app_base.html" %}
+{% block content %}
+<form method="POST" action="find">
+  <div class="row">
+    <div class="small-10 centered">
+      <div class="row collapse centered">
+        <div class="small-2 columns">
+          <span class="prefix radius">Browse</span>
+        </div>
+        <div class="small-8 columns">
+          <input type="text" id="browse-input" autofocus="true" name="item-id">
+        </div>
+        <div class="small-2 columns">
+          <input id="search-button" type="submit" class="button prefix" value="Search">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

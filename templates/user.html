@@ -1,0 +1,14 @@
+{% extends "app_base.html" %}
+{% block content %}
+
+{% if loggedIn %}
+<div class="row">
+  <div class="large-12 centered">
+    {{ userInfo.id }} {{ userInfo.location }}
+  </div>
+</div>
+{% else %}
+  <h1>Uh oh, you're not logged in. How'd you get here?!</h1>
+{% endif %}
+
+{% endblock %}
